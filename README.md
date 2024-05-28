@@ -1,3 +1,3 @@
 # edonjs
 
-- Editor on JS
+- Editor on NodeJS
