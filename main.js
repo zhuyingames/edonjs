@@ -2,7 +2,7 @@
 
 //console.log("edonjs: Editor on NodeJS");
 
-const VERSION = "0.0.7";
+const VERSION = "0.0.8";
 
 const fs = require("fs");
 
@@ -57,6 +57,24 @@ process.on("exit", () => {
 
 stdin.setRawMode(true);
 
+function backspace() {
+  if (columnIndex > 0) {
+    inputBuffer.pop();
+    columnIndex--;
+    if (columnIndex < colunms) {
+      stdout.cursorTo(columnIndex, cursorY);
+      stdout.write(" ");
+      stdout.cursorTo(columnIndex, cursorY);
+    } else {
+      stdout.cursorTo(0, cursorY);
+      const offsetX = columnIndex - colunms;
+      for (let i = offsetX; i < colunms + offsetX; i++) {
+        stdout.write(inputBuffer[i]);
+      }
+    }
+  }
+}
+
 stdin.on("data", (data) => {
   if (data.length === 1) {
     const number = data[0];
@@ -66,6 +84,10 @@ stdin.on("data", (data) => {
     }
     if (number <= 31) {
       switch (number) {
+        // Backspace
+        case 8: {
+          backspace();
+        }
         // Escape:
         case 27: {
           process.exit(0);
@@ -86,21 +108,7 @@ stdin.on("data", (data) => {
       }
       columnIndex++;
     } else {
-      if (columnIndex > 0) {
-        inputBuffer.pop();
-        columnIndex--;
-        if (columnIndex < colunms) {
-          stdout.cursorTo(columnIndex, cursorY);
-          stdout.write(" ");
-          stdout.cursorTo(columnIndex, cursorY);
-        } else {
-          stdout.cursorTo(0, cursorY);
-          const offsetX = columnIndex - colunms;
-          for (let i = offsetX; i < colunms + offsetX; i++) {
-            stdout.write(inputBuffer[i]);
-          }
-        }
-      }
+      backspace();
     }
   } else {
   }
