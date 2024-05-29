@@ -2,7 +2,7 @@
 
 //console.log("edonjs: Editor on NodeJS");
 
-const VERSION = "0.0.5";
+const VERSION = "0.0.6";
 
 const fs = require("fs");
 
@@ -33,6 +33,8 @@ if (process.argv.length > 2) {
 
 useAlternateScreenBuffer();
 
+stdout.cursorTo(0, 0);
+
 process.on("exit", () => {
   useMainScreenBuffer();
 });
@@ -40,10 +42,13 @@ process.on("exit", () => {
 stdin.setRawMode(true);
 
 stdin.on("data", (data) => {
-  const number = data[0];
-  if (number === 27) {
-    process.exit(0);
+  if (data.length === 1) {
+    const number = data[0];
+    if (number === 27) {
+      process.exit(0);
+    }
+    const ascii = String.fromCharCode(number);
+    stdout.write(ascii);
+  } else {
   }
-  const ascii = String.fromCharCode(number);
-  stdout.write(ascii);
 });
