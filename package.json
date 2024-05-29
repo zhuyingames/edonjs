@@ -1,11 +1,12 @@
 {
   "name": "edonjs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Editor on NodeJS",
   "author": "zhuyingames",
   "license": "MIT",
   "bin": {
-    "edonjs": "main.js"
+    "edonjs": "main.js",
+    "edon": "main.js"
   },
   "repository": {
     "type": "git",
