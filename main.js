@@ -11,6 +11,8 @@ const stdout = process.stdout;
 
 const ESC = "\u001b";
 
+const inputBuffer = [];
+
 function useAlternateScreenBuffer() {
   stdout.write(`${ESC}[?1049h`);
 }
@@ -44,11 +46,23 @@ stdin.setRawMode(true);
 stdin.on("data", (data) => {
   if (data.length === 1) {
     const number = data[0];
-    if (number === 27) {
-      process.exit(0);
+    if (number < 0 || number > 127) {
+      console.error("invalid input");
+      process.exit(1);
     }
-    const ascii = String.fromCharCode(number);
-    stdout.write(ascii);
+    if (number <= 31) {
+      switch (number) {
+        // Escape:
+        case 27: {
+          process.exit(0);
+        }
+      }
+    } else if (number <= 126) {
+      const ascii = String.fromCharCode(number);
+      inputBuffer.push(ascii);
+      stdout.write(ascii);
+    } else {
+    }
   } else {
   }
 });
