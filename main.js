@@ -2,7 +2,7 @@
 
 //console.log("edonjs: Editor on NodeJS");
 
-const VERSION = "0.0.8";
+const VERSION = "0.0.9";
 
 const fs = require("fs");
 
@@ -87,6 +87,7 @@ stdin.on("data", (data) => {
         // Backspace
         case 8: {
           backspace();
+          break;
         }
         // Escape:
         case 27: {
