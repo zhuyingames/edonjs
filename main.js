@@ -2,6 +2,8 @@
 
 //console.log("edonjs: Editor on NodeJS");
 
+const VERSION = "0.0.5";
+
 const fs = require("fs");
 
 const stdin = process.stdin;
@@ -15,6 +17,18 @@ function useAlternateScreenBuffer() {
 
 function useMainScreenBuffer() {
   stdout.write(`${ESC}[?1049l`);
+}
+
+if (process.argv.length > 2) {
+  const cmd1 = process.argv[2];
+  switch (cmd1) {
+    case "version":
+    case "ver":
+    case "-v": {
+      console.log(VERSION);
+      process.exit(0);
+    }
+  }
 }
 
 useAlternateScreenBuffer();
