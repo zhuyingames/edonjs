@@ -81,8 +81,8 @@ function input(number) {
 
 function backspace() {
   if (columnIndex > 0) {
-    inputBuffer.pop();
     columnIndex--;
+    inputBuffer.splice(columnIndex, 1);
     if (columnIndex < colunms) {
       cursorX--;
       stdout.cursorTo(columnIndex, cursorY);
