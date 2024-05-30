@@ -109,8 +109,11 @@ function cursorLeft() {
 }
 
 function cursorRight() {
-  if (cursorX < columnIndex) {
+  if (cursorX < inputBuffer.length) {
     if (cursorX < colunms - 1) {
+      if (columnIndex < inputBuffer.length) {
+        columnIndex++;
+      }
       cursorX++;
       stdout.cursorTo(cursorX, cursorY);
     }
@@ -142,6 +145,10 @@ stdin.on("data", (data) => {
       }
     } else if (number <= 126) {
       input(number);
+      // DEBUG
+      // if (number === 65) {
+      //   console.log(inputBuffer);
+      // }
     } else {
       backspace();
     }
