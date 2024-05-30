@@ -78,6 +78,7 @@ function backspace() {
     inputBuffer.pop();
     columnIndex--;
     if (columnIndex < colunms) {
+      cursorX--;
       stdout.cursorTo(columnIndex, cursorY);
       stdout.write(" ");
       stdout.cursorTo(columnIndex, cursorY);
@@ -100,8 +101,10 @@ function cursorLeft() {
 
 function cursorRight() {
   if (cursorX < columnIndex) {
-    cursorX++;
-    stdout.cursorTo(cursorX, cursorY);
+    if (cursorX < colunms - 1) {
+      cursorX++;
+      stdout.cursorTo(cursorX, cursorY);
+    }
   }
 }
 
