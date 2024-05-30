@@ -62,7 +62,9 @@ function input(number) {
   inputBuffer.push(ascii);
   if (columnIndex < colunms) {
     stdout.write(ascii);
-    cursorX++;
+    if (cursorX < colunms - 1) {
+      cursorX++;
+    }
   } else {
     stdout.cursorTo(0, cursorY);
     const offsetX = 1 + columnIndex - colunms;
