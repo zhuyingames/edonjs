@@ -59,12 +59,16 @@ stdin.setRawMode(true);
 
 function input(number) {
   const ascii = String.fromCharCode(number);
-  inputBuffer.push(ascii);
+  inputBuffer.splice(columnIndex, 0, ascii);
   if (columnIndex < colunms) {
-    stdout.write(ascii);
     if (cursorX < colunms - 1) {
       cursorX++;
     }
+    stdout.cursorTo(0, cursorY);
+    for (let i = 0; i < inputBuffer.length; i++) {
+      stdout.write(inputBuffer[i]);
+    }
+    stdout.cursorTo(cursorX, cursorY);
   } else {
     stdout.cursorTo(0, cursorY);
     const offsetX = 1 + columnIndex - colunms;
@@ -96,6 +100,9 @@ function backspace() {
 
 function cursorLeft() {
   if (cursorX > 0) {
+    if (columnIndex > 0) {
+      columnIndex--;
+    }
     cursorX--;
     stdout.cursorTo(cursorX, cursorY);
   }
