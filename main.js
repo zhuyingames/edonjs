@@ -57,6 +57,22 @@ process.on("exit", () => {
 
 stdin.setRawMode(true);
 
+function input(number) {
+  const ascii = String.fromCharCode(number);
+  inputBuffer.push(ascii);
+  if (columnIndex < colunms) {
+    stdout.write(ascii);
+    cursorX++;
+  } else {
+    stdout.cursorTo(0, cursorY);
+    const offsetX = 1 + columnIndex - colunms;
+    for (let i = offsetX; i < colunms + offsetX; i++) {
+      stdout.write(inputBuffer[i]);
+    }
+  }
+  columnIndex++;
+}
+
 function backspace() {
   if (columnIndex > 0) {
     inputBuffer.pop();
@@ -89,28 +105,43 @@ stdin.on("data", (data) => {
           backspace();
           break;
         }
+        // CR
+        case 13: {
+          break;
+        }
         // Escape:
         case 27: {
           process.exit(0);
         }
       }
     } else if (number <= 126) {
-      const ascii = String.fromCharCode(number);
-      inputBuffer.push(ascii);
-      if (columnIndex < colunms) {
-        stdout.write(ascii);
-        cursorX++;
-      } else {
-        stdout.cursorTo(0, cursorY);
-        const offsetX = 1 + columnIndex - colunms;
-        for (let i = offsetX; i < colunms + offsetX; i++) {
-          stdout.write(inputBuffer[i]);
-        }
-      }
-      columnIndex++;
+      input(number);
     } else {
       backspace();
     }
   } else {
+    if (data.length === 3) {
+      // Arrows
+      if (data[0] === 27 && data[1] === 91) {
+        switch (data[2]) {
+          // up
+          case 65: {
+            break;
+          }
+          // down
+          case 66: {
+            break;
+          }
+          // right
+          case 67: {
+            break;
+          }
+          // left
+          case 68: {
+            break;
+          }
+        }
+      }
+    }
   }
 });
