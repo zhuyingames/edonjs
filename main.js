@@ -12,12 +12,12 @@ const stdout = process.stdout;
 const ESC = "\u001b";
 
 const inputBuffer = [];
-let rowIndex = 0;
-let columnIndex = 0;
 let cursorX = 0;
 let cursorY = 0;
-let rows = 0;
 let colunms = 0;
+let columnIndex = 0;
+let rows = 0;
+let rowIndex = 0;
 
 function useAlternateScreenBuffer() {
   stdout.write(`${ESC}[?1049h`);
@@ -85,9 +85,12 @@ function backspace() {
     inputBuffer.splice(columnIndex, 1);
     if (columnIndex < colunms) {
       cursorX--;
-      stdout.cursorTo(columnIndex, cursorY);
-      stdout.write(" ");
-      stdout.cursorTo(columnIndex, cursorY);
+      stdout.clearLine(0);
+      stdout.cursorTo(0, cursorY);
+      for (let i = 0; i < inputBuffer.length; i++) {
+        stdout.write(inputBuffer[i]);
+      }
+      stdout.cursorTo(cursorX, cursorY);
     } else {
       stdout.cursorTo(0, cursorY);
       const offsetX = columnIndex - colunms;
