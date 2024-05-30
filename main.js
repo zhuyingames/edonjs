@@ -91,6 +91,20 @@ function backspace() {
   }
 }
 
+function cursorLeft() {
+  if (cursorX > 0) {
+    cursorX--;
+    stdout.cursorTo(cursorX, cursorY);
+  }
+}
+
+function cursorRight() {
+  if (cursorX < columnIndex) {
+    cursorX++;
+    stdout.cursorTo(cursorX, cursorY);
+  }
+}
+
 stdin.on("data", (data) => {
   if (data.length === 1) {
     const number = data[0];
@@ -134,10 +148,12 @@ stdin.on("data", (data) => {
           }
           // right
           case 67: {
+            cursorRight();
             break;
           }
           // left
           case 68: {
+            cursorLeft();
             break;
           }
         }
